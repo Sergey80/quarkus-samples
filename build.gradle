@@ -1,0 +1,59 @@
+// this block is necessary to make enforcedPlatform work for Quarkus plugin available
+// only locally (snapshot) that is also importing the Quarkus BOM
+buildscript {
+    repositories {
+        mavenLocal()
+    }
+    dependencies {
+        classpath "io.quarkus:quarkus-gradle-plugin:${quarkusPluginVersion}"
+    }
+}
+
+plugins {
+    id 'java'
+}
+
+apply plugin: 'io.quarkus'
+
+repositories {
+     mavenLocal()
+     mavenCentral()
+}
+
+dependencies {
+    implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
+    implementation 'io.quarkus:quarkus-resteasy'
+    implementation 'io.quarkus:quarkus-resteasy-jackson'
+    implementation 'io.quarkus:quarkus-reactive-pg-client'
+    implementation 'io.quarkus:quarkus-rest-client'
+    implementation 'io.quarkus:quarkus-smallrye-opentracing'
+    implementation 'io.opentracing.contrib:opentracing-jdbc'
+    implementation 'io.quarkus:quarkus-smallrye-openapi'
+    implementation 'io.quarkus:quarkus-smallrye-health'
+    implementation 'io.quarkus:quarkus-agroal'
+    implementation 'io.quarkus:quarkus-smallrye-fault-tolerance'
+    implementation 'io.quarkus:quarkus-infinispan-client'
+    implementation 'io.quarkus:quarkus-kubernetes'
+
+    implementation 'io.smallrye:smallrye-context-propagation-propagators-rxjava2'
+    implementation 'org.jboss.resteasy:resteasy-rxjava2'
+
+    testImplementation 'io.quarkus:quarkus-junit5'
+    testImplementation 'io.rest-assured:rest-assured'
+
+    nativeTestImplementation 'io.quarkus:quarkus-junit5'
+    nativeTestImplementation 'io.rest-assured:rest-assured'
+}
+
+group 'my.project.subject'
+version '1.0.0'
+
+compileJava {
+    options.compilerArgs << '-parameters'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
